@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 
 function Header() {
   const authStatus = useSelector((state) => state.auth.status)
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const navItems = [
     {
@@ -39,8 +39,8 @@ function Header() {
 
   return (
     <header className='py-3 shadow bg-gray-500'>
-      <Container>
         <nav className='flex'>
+      {/* <Container> */}
           <div className='mr-4'>
             <Link to='/'>
               <Logo width='70px'   />
@@ -64,8 +64,8 @@ function Header() {
               </li>
             )}
           </ul>
+        {/* </Container> */}
         </nav>
-        </Container>
     </header>
   )
 }

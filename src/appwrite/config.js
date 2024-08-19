@@ -1,4 +1,4 @@
-import {Client,Databases,ID,Storage,Query } from "appwrite";
+import {Client,Databases,ID,Storage,Query,Permission,Role } from "appwrite";
 import conf from "../conf/conf"
 
 
@@ -18,7 +18,7 @@ export class Service  {
 
     }
 
-    async createPost({title,slug,content,featuredImage,status,userId}){
+    async createPost({title,slug,content,featuredImage,status}){
         try {
             await this.databases.createDocument(
                 conf.appwriteDatabaseId,
@@ -29,7 +29,7 @@ export class Service  {
                     content,
                     featuredImage,
                     status,
-                    userId,
+                    // userId,
                 }
             )
 
@@ -87,35 +87,35 @@ export class Service  {
 // choice hy parameter pr lagoi ya await ma
 // [] all logic query implement in 
 // we create index {status key}in appwrite so that why we apply query otherwise can't 
-    // async getPosts(queries = [Query.equal("status" , "active")]){
-    //     try {
-    //         return await this.databases.listDocuments(
-    //             conf.appwriteDatabaseId,
-    //             conf.appwriteCollectionId,
-    //             queries,
-    //             // [
-    //             //     Query.equal("status" , "active")
-    //             // ]
-    //         )
-    //     } catch (error) {
-    //         console.log("Error in appwrite Config :: get all posts error")
-    //         return false;
-    //     }
-    // }
-    async getPosts(queries = [Query.equal("status", "active")]){
+    async getPosts(queries = [Query.equal("status" , "active")]){
         try {
             return await this.databases.listDocuments(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
                 queries,
-                
-
+                // [
+                //     Query.equal("status" , "active")
+                // ]
             )
         } catch (error) {
-            console.log("Appwrite serive :: getPosts :: error", error);
-            return false
+            console.log("Error in appwrite Config :: get all posts error")
+            return false;
         }
     }
+    // async getPosts(queries = [Query.equal("status", "active")]){
+    //     try {
+    //         return await this.databases.listDocuments(
+    //             conf.appwriteDatabaseId,
+    //             conf.appwriteCollectionId,
+    //             queries,
+                
+
+    //         )
+    //     } catch (error) {
+    //         console.log("Appwrite serive :: getPosts :: error", error);
+    //         return false
+    //     }
+    // }
 
 //FILE SERVICES
 
@@ -151,11 +151,21 @@ export class Service  {
            return this.storage.getFilePreview(
                 conf.appwriteBucketId,
                 fileId,
+                [
+                    Permission.read(Role.any()),
+                    Permission.update(Role.any()),
+                ]
     )}
 
-
-
+    // getFilePreview(fileId){
+    //     return this.bucket.getFilePreview(
+    //         conf.appwriteBucketId,
+    //         fileId
+    //     )
+    // }
 }
+
+
 
 const service = new Service()
 

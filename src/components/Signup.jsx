@@ -1,10 +1,11 @@
 import React from "react";
 import authService from "../appwrite/authService";
 import { Logout, Login } from "../store/authSlice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import {Logo,Input,Button} from "./index";
 function Signup() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ function Signup() {
     } catch (error) {
       console.log("Error", error);
       setError(error.message);
+      // console.log("HELOOOOOOOOOOOOOOOOOOOO")
     }
   };
   return (
@@ -80,7 +82,7 @@ function Signup() {
                     required:true
                 })}
                 />
-                <Button className="w-full" type="submit">SignUp</Button>          
+                <Button className="w-full" type="submit">Create Account</Button>          
             </div>
         </form>
       

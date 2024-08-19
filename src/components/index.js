@@ -7,12 +7,11 @@ import Select from "./Select.jsx"
 import Input from "./Input.jsx"
 import Button from "./Button.jsx"
 import RTE from "./RTE.jsx"
-import Login from "./login.jsx"
+import Login from "./Login.jsx"
 import Signup from "./Signup.jsx"
-import PostCard from "./postCard.jsx"
 import PostForm from "./PostForm/postForm.jsx"
 import AuthLayout from "./authLayout.jsx"
-
+import PostCard from "./PostCard.jsx"
 
 export {
     Header,

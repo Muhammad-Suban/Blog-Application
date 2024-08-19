@@ -41,26 +41,33 @@ export class AuthService{
             console.log("error in authentication :: login Account",error)
         }
     }
+    // async login({email, password}) {
+    //     try {
+    //         return await this.account.createEmailSession(email, password);
+    //     } catch (error) {
+    //         throw error;
+    //     }
+    // }
 
     // chech user in Home page or not
-    // async getCurrentUser(){
+    async getCurrentUser(){
 
-    //     try {
-    //       return await this.account.get();
+        try {
+          return await this.account.get();
 
-    //     //    if(userexist){
-    //     //     return userexist
-    //     //    }
-    //     //    else{
-    //     //     return null
-    //     //    }
+        //    if(userexist){
+        //     return userexist
+        //    }
+        //    else{
+        //     return null
+        //    }
 
-    //     } catch (error) {
-    //         console.log("error in authentication :: current user Account",error)
-    //     }
-    //     return null
-    // }
-    async logout({email,password}){
+        } catch (error) {
+            console.log("error in authentication :: current user Account",error)
+        }
+        return null
+    }
+    async logout(){
 
             try {
                return await this.account.deleteSessions()

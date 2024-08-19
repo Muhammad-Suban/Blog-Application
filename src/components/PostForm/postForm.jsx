@@ -2,17 +2,17 @@ import React,{useCallback,useEffect} from 'react'
 import appwriteService from '../../appwrite/config'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import {Button ,Logo,Input, RTE } from "../index"
+import {Button ,Input, RTE ,Select,Logo } from "../index"
 import { useForm } from 'react-hook-form'
 
 export default function postForm({post}) {
   
-    const { register, handleSubmit, watch, setValue, getValues, control} = useForm({
-        defaultValues:{
-            title:post?.title || "",
+    const { register, handleSubmit, watch, setValue, control, getValues } = useForm({
+        defaultValues: {
+            title: post?.title || "",
+            slug: post?.$id || "",
             content: post?.content || "",
-            status: post?.status||"",
-            slug: post?.slug|| "active"
+            status: post?.status || "active",
         },
     });
     
@@ -22,39 +22,40 @@ export default function postForm({post}) {
   
   
   // submit and update post button functionalty
-  const submit = async(data) => {
-    if(post){
-       const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) :null
-        if(file){
-            await appwriteService.deleteFile(post.featuredImage)
-        }
-        const db = await appwriteService.updatePost(post.$id,{
-            ...data,
-            featuredImage: file? file.$id : undefined        
-        })
-       if(db){
-        navigate(`post/${db.$id}`)
-       } 
-    }
-    else{
-        const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null
-        
-        //** sir work but i thought therir is no need to add waste of line
-        //      if(file){
-        // const imageId = file.$id
-        // data.featuredImage = imageId
-        //     }
-        const db = await appwriteService.createPost({
-           ...data,
-           userId:userData.$id,
-           featuredImage: file.$id
-        })
-        if(db){
-            navigate(`post/${db.$id}`)
-        }
-    }
+  const submit = async (data) => {
+    if (post) {
+        const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null;
 
-  }
+        if (file) {
+            appwriteService.deleteFile(post.featuredImage);
+        }
+
+        const dbPost = await appwriteService.updatePost(post.$id, {
+            ...data,
+            featuredImage: file ? file.$id : undefined,
+        });
+
+        if (dbPost) {
+            navigate(`/post/${dbPost.$id}`);
+        }
+    } else {
+        const file = await appwriteService.uploadFile(data.image[0]);
+
+        if (file) {
+            const fileId = file.$id;
+            data.featuredImage = fileId;
+            const dbPost = await appwriteService.createPost({ 
+                ...data,
+                //  userId: userData.$id 
+                });
+
+            if (dbPost) {
+                navigate(`/post/${dbPost.$id}`);
+            }
+        }
+    }
+};
+
   const slugTransform = useCallback((value) =>{
       if(value && typeof value === 'string')
         return value
